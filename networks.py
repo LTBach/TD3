@@ -8,7 +8,7 @@ import torch.optim as optim
 
 class ActorNetwork(nn.Module):
     def __init__(self, alpha, state_dims, fc1_dims, fc2_dims, action_dims,
-                 name, chkpt_file='tmp/td3'):
+                 name, chkpt_file='checkpoint'):
         super(ActorNetwork, self).__init__()
         self.state_dims = state_dims
         self.fc1_dims = fc1_dims
@@ -19,7 +19,7 @@ class ActorNetwork(nn.Module):
         self.checkpoint_file = os.path.join(self.checkpoint_dir, 
                                             self.name+'_td3')
         
-        self.fc1 = nn.Linear(*self.state_dims, self.fc1_dims)
+        self.fc1 = nn.Linear(self.state_dims, self.fc1_dims)
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
         self.mu = nn.Linear(self.fc2_dims, self.action_dims)
 
@@ -55,7 +55,7 @@ class ActorNetwork(nn.Module):
 
 class CriticNetwork(nn.Module):
     def __init__(self, beta, state_dims, fc1_dims, fc2_dims, action_dims,
-                 name, chkpt_dir='tmp/td3'):
+                 name, chkpt_dir='checkpoint'):
         super(CriticNetwork, self).__init__()
         self.state_dims = state_dims
         self.fc1_dims = fc1_dims
@@ -66,7 +66,7 @@ class CriticNetwork(nn.Module):
         self.checkpoint_file = os.path.join(self.checkpoint_dir,
                                             self.name+'_td3')
         
-        self.fc1 = nn.Linear(self.state_dims[0] + self.action_dims, self.fc1_dims)
+        self.fc1 = nn.Linear(self.state_dims + self.action_dims, self.fc1_dims)
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
         self.action_value = nn.Linear(self.fc2_dims, 1)
 

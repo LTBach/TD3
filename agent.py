@@ -102,12 +102,12 @@ class Agent():
 
         self.beh_critic_1.optimizer.zero_grad()
         self.beh_critic_2.optimizer.zero_grad()
-
         critic_loss_1 = F.mse_loss(target, action_value_1)
         critic_loss_2 = F.mse_loss(target, action_value_2)
-
+        
         critic_loss = critic_loss_1 + critic_loss_2
         critic_loss.backward()
+        
         self.beh_critic_1.optimizer.step()
         self.beh_critic_2.optimizer.step()
 
