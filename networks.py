@@ -21,12 +21,12 @@ class ActorNetwork(nn.Module):
         
         self.fc1 = nn.Linear(self.state_dims, self.fc1_dims)
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
-        self.mu = nn.Linear(self.fc2_dims, self.action_dims)
+        self.pi = nn.Linear(self.fc2_dims, self.action_dims)
 
         self.optimizer = optim.Adam(self.parameters(), lr=alpha)
 
-        self.device = T.device('cuda:0' if T.cuda.is_available() 
-                               else 'cuda:1')
+        self.device = T.device('cuda' if T.cuda.is_available() 
+                               else 'cpu')
         
         self.to(self.device)
 
@@ -36,7 +36,7 @@ class ActorNetwork(nn.Module):
         action = self.fc2(action)
         action = F.relu(action)
 
-        action = F.tanh(self.mu(action))
+        action = F.tanh(self.pi(action))
 
         return action
     
@@ -72,8 +72,8 @@ class CriticNetwork(nn.Module):
 
         self.optimizer = optim.Adam(self.parameters(), lr=beta)
         
-        self.device = T.device('cuda:0' if T.cuda.is_available() 
-                               else 'cuda:1')
+        self.device = T.device('cuda' if T.cuda.is_available() 
+                               else 'cpu')
         self.to(self.device)
 
     def forward(self, state, action):

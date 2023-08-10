@@ -33,7 +33,7 @@ class Agent():
         self.tar_critic_1 = CriticNetwork(beta, state_dims, layer1_size, 
                                           layer2_size, action_dims, 'tar_critic_1')
         self.tar_critic_2 = CriticNetwork(beta, state_dims, layer1_size, 
-                                          layer2_size, action_dims, 'beh_critic_2')
+                                          layer2_size, action_dims, 'tar_critic_2')
         
         self.noise_sigma = noise_sigma
         self.update_network_parameters(tau=1)
@@ -166,6 +166,7 @@ class Agent():
         self.tar_actor.save_checkpoint()
         self.tar_critic_1.save_checkpoint()
         self.tar_critic_2.save_checkpoint()
+        self.memory.save_buffer()
 
     def load_models(self):
         self.beh_actor.load_checkpoint()
@@ -174,4 +175,5 @@ class Agent():
         self.tar_actor.load_checkpoint()
         self.tar_critic_1.load_checkpoint()
         self.tar_critic_2.load_checkpoint()
+        self.memory.load_buffer()
         
